@@ -2,10 +2,11 @@
 (function () {
   "use strict";
 
-  var Vector3 = require("math/vector3/typedBuffer"),
+  var BufferFactory = require("configuration/bufferFactory"),
+    Vector3 = require("math/vector3"),
     DELTA = 0.001;
 
-  describe("Vector3 on typed buffers", function () {
+  describe("math/vector3 (typed buffers implementation)", function () {
 
     it("is a function (object factory)", function () {
       expect(Vector3).to.be.a("function");
@@ -218,6 +219,27 @@
           expect(result.y).to.be.closeTo(0.01, DELTA);
           expect(result.z).to.be.equal(0);
 
+        });
+      });
+
+      describe("set - mutate vector state in-place", function () {
+
+        it("mutates the original object", function () {
+          var mutable = new Vector3(1, 2, 3);
+          mutable.set(3, 2, 1);
+
+          expect(mutable.data[0]).to.be.equal(3);
+          expect(mutable.data[1]).to.be.equal(2);
+          expect(mutable.data[2]).to.be.equal(1);
+        });
+
+        it("supports the {x,y,z} object argument", function () {
+          var mutable = new Vector3(1, 2, 3);
+          mutable.set({x: 3, y: 2, z: 1});
+
+          expect(mutable.data[0]).to.be.equal(3);
+          expect(mutable.data[1]).to.be.equal(2);
+          expect(mutable.data[2]).to.be.equal(1);
         });
       });
     });
