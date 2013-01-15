@@ -34,9 +34,9 @@
 
         vector = new Vector3(arr);
 
-        it("creates new buffer view", function () {
+        it("wraps given buffer view", function () {
           expect(vector.data).to.be.instanceOf(Float32Array);
-          expect(vector.data).not.to.be.equal(arr);
+          expect(vector.data).to.be.equal(arr);
         });
 
         it("initializes buffer with values from original buffer", function () {
@@ -53,7 +53,7 @@
 
         it("creates a vector with buffer", function () {
           expect(vector).to.be.instanceOf(Vector3);
-          expect(vector.data).to.be.instanceOf(Float32Array);
+          expect(vector.data).to.be.instanceOf(BufferFactory);
         });
 
         it("initializes buffer correctly", function () {
@@ -66,15 +66,15 @@
       describe("object based creation", function () {
         var o, vector;
         o = {
-          x: Math.E,
-          y: Math.PI,
-          z: Math.SQRT2
+          x:Math.E,
+          y:Math.PI,
+          z:Math.SQRT2
         };
         vector = new Vector3(o);
 
         it("creates a vector with buffer", function () {
           expect(vector).to.be.instanceOf(Vector3);
-          expect(vector.data).to.be.instanceOf(Float32Array);
+          expect(vector.data).to.be.instanceof(BufferFactory);
         });
 
         it("initializes buffer correctly", function () {
@@ -91,7 +91,7 @@
 
         it("creates a vector with buffer", function () {
           expect(vector).to.be.instanceOf(Vector3);
-          expect(vector.data).to.be.instanceOf(Float32Array);
+          expect(vector.data).to.be.instanceOf(BufferFactory);
         });
 
         it("initializes buffer correctly", function () {
@@ -105,9 +105,9 @@
     describe("accessors", function () {
       var o, vector;
       o = {
-        x: Math.PI,
-        y: Math.E,
-        z: Math.SQRT2
+        x:Math.PI,
+        y:Math.E,
+        z:Math.SQRT2
       };
       vector = new Vector3(o);
 
@@ -119,9 +119,9 @@
 
       it("setters modify appropriate properties", function () {
         var mod = {
-          x: o.y,
-          y: o.z,
-          z: o.x
+          x:o.y,
+          y:o.z,
+          z:o.x
         };
 
         _(mod).each(function (v, k) {
@@ -155,7 +155,7 @@
 
       describe("add - vector addition", function () {
         it("works with objects {x, y, z}", function () {
-          var result = vector.add({x: 1, y: 1, z: 1});
+          var result = vector.add({x:1, y:1, z:1});
 
           expect(result.x).to.be.equal(2);
           expect(result.y).to.be.equal(2);
@@ -194,7 +194,7 @@
 
       describe("sub - vector substraction", function () {
         it("works with objects {x,y,z}", function () {
-          var result = vector.sub({x: 1, y: 1, z: 1});
+          var result = vector.sub({x:1, y:1, z:1});
 
           expect(result.x).to.be.equal(0);
           expect(result.y).to.be.equal(0);
@@ -235,7 +235,7 @@
 
         it("supports the {x,y,z} object argument", function () {
           var mutable = new Vector3(1, 2, 3);
-          mutable.set({x: 3, y: 2, z: 1});
+          mutable.set({x:3, y:2, z:1});
 
           expect(mutable.data[0]).to.be.equal(3);
           expect(mutable.data[1]).to.be.equal(2);

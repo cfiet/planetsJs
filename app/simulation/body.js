@@ -6,60 +6,53 @@
     Body;
 
   Body = function () {
-    function init (body) {
-      body.positionVector = body.positionVector || new Vector3(body.array.subarray(1, 3));
-      body.speedVector = body.speedVector || new Vector3(body.array.subarray(4, 3));
-    }
-
-    function Body (/* initialState || {mass, position, speed} || mass, position, speed */) {
-      this.array = new BufferFactory(7);
-
-      var param;
-      if (arguments.length === 1) {
-        param = arguments[0];
-        if (param instanceof BufferFactory || param instanceof Array) {
-          this.array.set(param);
-          init(this);
-        } else if (param instanceof Object) {
-          init(this);
-          this.set(param);
-        }
-      } else if (arguments.length === 3) {
-        init(this);
+    function Body(/* initialState || {mass, position, speed} || mass, position, speed */) {
+      if (arguments.length === 1 && arguments[0] instanceof BufferFactory) {
+        this.array = arguments[0];
+      } else {
+        this.array = new BufferFactory(7);
         this.set.apply(this, arguments);
       }
     }
 
     Body.prototype = {
-      get mass () {
-        this.array[0];
+      get mass() {
+        return this.array[0];
       },
-      set mass (m) {
+      set mass(m) {
         this.array[0] = m;
       },
-      get position () {
+      get position() {
+        if (!this.positionVector) {
+          this.positionVector = new Vector3(this.array.subarray(1, 4));
+        }
         return this.positionVector;
       },
-      set position (v) {
-        this.positionVector.set(v);
+      set position(v) {
+        this.position.set(v);
       },
-      get speed () {
+      get speed() {
+        if (!this.speedVector) {
+          this.speedVector = new Vector3(this.array.subarray(4, 7));
+        }
         return this.speedVector;
       },
-      set speed (v) {
-        this.speedVector.set(v);
+      set speed(v) {
+        this.speed.set(v);
       },
-      set: function (/* mass, position, speed || {mass, position, speed} */) {
+      set:function (/* array || mass, position, speed || {mass, position, speed} */) {
         var param;
-        if (arguments.length === 1 && arguments[0] instanceof Object) {
+        if (arguments.length === 1) {
           param = arguments[0];
-          this.set(param.mass, param.position, param.speed);
+          if (param instanceof Array) {
+            this.array.set(param);
+          } else if (param instanceof Object) {
+            this.set(param.mass, param.position, param.speed);
+          }
         } else if (arguments.length === 3) {
-          this.mass = arguments[0];
-          this.position = arguments[1];
-          this.speed = arguments[2];
-        } else {
-          throw new Error("Unsupported parameters");
+          this.mass = arguments[0] || this.mass;
+          this.position = arguments[1] || this.position;
+          this.speed = arguments[2] || this.speed;
         }
       }
     };
