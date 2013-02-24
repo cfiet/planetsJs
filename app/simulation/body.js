@@ -2,11 +2,11 @@
   "use strict";
 
   var BufferFactory = require("configuration/bufferFactory"),
-    Vector3 = require("math/vector3"),
-    Body;
+      Vector3 = require("math/vector3"),
+      Body;
 
   Body = function () {
-    function Body(/* initialState || {mass, position, speed} || mass, position, speed */) {
+    function Body(/* initialState || {mass, position, speed} || mass, position, speed || body*/) {
       if (arguments.length === 1 && arguments[0] instanceof BufferFactory) {
         this.array = arguments[0];
       } else {
